@@ -13,6 +13,7 @@ namespace dropfile
 
         static bool verbose = false;
         static bool test = false;
+        static bool ignoreError = false;
 
         static void usage()
         {
@@ -22,6 +23,7 @@ namespace dropfile
                + "file1,2... : moveed filename. it can use wildcard.\n"
                + "options    : -T ... Test mode\n"
                + "           : -V ... Verbose mode\n"
+               + "           : -I ... Ignore error occurs\n"
             );
         }
         static bool isWildcard(string glob)
@@ -73,6 +75,9 @@ namespace dropfile
                         case "T":
                             test = true;
                             break;
+                        case "I":
+                            ignoreError = true;
+                            break;
                         default:
                             Console.Error.WriteLine("dropfile: illegal option :{0}", arg);
                             return 1;
@@ -92,12 +97,18 @@ namespace dropfile
                     if (!isWildcard(glob))
                     {
                         string file = System.IO.Path.Combine(fullpath, glob);
-                        drop(file);
+                        if (drop(file) == false && ignoreError == false)
+                        {
+                            return 1;
+                        }
                     }
-                    else {
+                    else
+                    {
                         foreach (string file in System.IO.Directory.GetFiles(fullpath, glob))
                         {
-                            drop(file);
+                            if (drop(file) == false && ignoreError == false){
+                                return 1;
+                            }
                         }
                     }
                 }
