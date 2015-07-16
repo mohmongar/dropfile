@@ -32,7 +32,7 @@ namespace dropfile
             }
             return false;
         }
-        static void  drop(string file)
+        static bool  drop(string file)
         {
             if (System.IO.File.Exists(file))
             {
@@ -44,10 +44,12 @@ namespace dropfile
                 {
                     FileSystem.DeleteFile(file, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
                 }
+                return true;
             }
             else
             {
                 Console.Error.WriteLine("dropfile: File not exist {0}", file);
+                return false;
             }
         }
 
