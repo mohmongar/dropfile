@@ -14,7 +14,9 @@ namespace dropfile
         static bool verbose = false;
         static bool test = false;
         static bool ignoreError = false;
-
+        /// <summary>
+        /// output usage to console
+        /// </summary>
         static void usage()
         {
             Console.Write(
@@ -26,6 +28,11 @@ namespace dropfile
                + "           : -I ... Ignore error occurs\n"
             );
         }
+        /// <summary>
+        /// Check whether exist wild card character in filename string
+        /// </summary>
+        /// <param name="glob">string : filename </param>
+        /// <returns>bool : exist or nothing</returns>
         static bool isWildcard(string glob)
         {
             if (glob.IndexOfAny(new char[] { '?', '*' }) >= 0)
@@ -34,6 +41,11 @@ namespace dropfile
             }
             return false;
         }
+        /// <summary>
+        /// drop function  
+        /// </summary>
+        /// <param name="file">string : filename path</param>
+        /// <returns>bool : success or fail</returns>
         static bool  drop(string file)
         {
             if (System.IO.File.Exists(file))
@@ -54,7 +66,9 @@ namespace dropfile
                 return false;
             }
         }
-
+        /// <summary>
+        /// main routine to analyze command line strings
+        /// </summary>
         static int Main(string[] args)
         {
             if (args.Length == 0)
@@ -64,7 +78,6 @@ namespace dropfile
             }
             foreach (string arg in args)
             {
- //               Console.WriteLine("arg:{0}",arg);
                 if (arg.StartsWith("-"))
                 {
                     switch(arg.Substring(1).ToUpper())
